@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <title>Books API</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        nav {
+            height: 75px;
+            line-height: 75px;
+        }
+        nav .brand-logo {
+            font-size: 2.3em;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper blue">
+                <div class="brand-logo center">Books API</div>
+            </div>
+        </nav>
+    </div>
+    <div class="fixed-action-btn toolbar direction-top">
+        <a class="btn-floating btn-large blue">
+            <i class="material-icons">menu</i>
+        </a>
+        <ul>
+            <li class="waves-effect waves-light">
+                <a class="modal-trigger" href="#modalAddBook">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+            <li class="waves-effect waves-light">
+                <a id="update" class="material-icons">
+                    <i class="material-icons">autorenew</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container section">
+        <div class="section">
+            <div id="alert" style="display: none" class="card-panel red lighten-1 white-text row">
+                <b>search error :(</b>
+            </div>
+            <div id="loading" class="row center">
+                <img src="loading.gif">
+            </div>
+            <div class="row" id="books">
+            </div>
+        </div>
+    </div>
+    <div id="modalAddBook" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row">
+                <h4><i class="material-icons">book</i>  Add Book</h4>
+            </div>
+            <div style="display: none" id="addLoading" class="row center">
+                <img src="loading.gif">
+            </div>
+            <div id="addAlert" style="display: none" class="card-panel red lighten-1 white-text row">
+                <b>Can not add your book :(</b>
+            </div>
+            <div id="addForm" class="row">
+                <form class="col s12">
+                    <div class="row section">
+                        <div class="input-field col s12">
+                            <input id="addFirstName" type="text">
+                            <label for="addFirstName">First Name*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addLastName" type="text">
+                            <label for="addLastName">Last Name*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addTitle" type="text">
+                            <label for="addTitle">Title<*/label>
+                        </div>
+                        <div class="input-field col s12">
+                            <textarea id="addDescription" class="materialize-textarea"></textarea>
+                            <label for="addDescription">Description</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addPrice" type="number" step="0.01" min="0" max="2000">
+                            <label for="addPrice">Price*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addWidth" type="number" min="11" max="60">
+                            <label for="addWidth">Width (11-60cm)*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addHeight" type="number" min="10" max="100">
+                            <label for="addHeight">Height (10-100cm)*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addLength" type="number" min="16" max="60">
+                            <label for="addLength">Length (16-60cm)*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addWeight" type="number" step="0.01" min="0" max="1">
+                            <label for="addWeight">Weight (0,05-1kg)*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addCellPhone" type="tel" class="validate">
+                            <label for="addCellPhone">Cell Phone (10-11)*</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="addCep" type="tel" class="validate">
+                            <label for="addCep">CEP (8)*</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat  blue-grey darken-2 white-text">Cancel</a>
+            <button type="button" id="addSubmit" class="waves-effect waves-green btn-flat blue white-text">Save</button>
+        </div>
+    </div>
+    <div id="modalBook" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                    <h4><i class="material-icons">shopping_cart</i>  Buy Book</h4>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <p class="flow-text" id="title"></p>
+                                    <p>Seller Name: <span id="sellerName"></span></p>
+                                    <p>cellPhone: <span id="cellPhone"></span></p>
+                                    <p>CEP: <span id="cep"></span></p>
+                                    <p>Height: <span id="height"></span></p>
+                                    <p>Width: <span id="width"></span></p>
+                                    <p>length: <span id="length"></span></p>
+                                    <p>Weight: <span id="weight"></span></p>
+                                    <p>Description: <span id="description"></span></p>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="inputCep" type="text" class="validate">
+                                    <label for="inputCep">CEP</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <button type="button" id="calculateCep" class="waves-effect waves-green btn-flat  blue white-text">Calculate</button>
+                                </div>
+                                <div id="alertCep" style="display: none" class="card-panel red lighten-1 white-text col s12">
+                                    <b>calculate error :(</b>
+                                </div>
+                                <div id="loadingCep" style="display: none" class="col s12 center">
+                                    <img src="loading.gif">
+                                </div>
+                                <div id="resultCep" style="display: none" class="input-field col s12">
+                                    <table class="responsive-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Price</th>
+                                                <th>delivery</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>SEDEX</td>
+                                                <td id="sedexPrice">R$70,00</td>
+                                                <td id="sedexDays">7 Days</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PAC</td>
+                                                <td id="pacPrice">R$70,00</td>
+                                                <td id="pacDays">7 Days</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="modal-close waves-effect waves-green btn-flat  blue-grey darken-2 white-text">Close</a>
+                </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
